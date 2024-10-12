@@ -1,6 +1,7 @@
 package io.devsense.basic_rest_service.controller;
 
 import io.devsense.basic_rest_service.domain.model.Greeting;
+import io.devsense.basic_rest_service.domain.model.GreetingOldref;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,5 +22,11 @@ public class GreetingController {
     public Greeting greetingWithJavaconfig(@RequestParam(required = false, defaultValue = "World") String name) {
         System.out.println("==== in greeting ====");
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    }
+
+    @GetMapping("/greeting-oldref-javaconfig")
+    public GreetingOldref greetingOldrefWithJavaconfig(@RequestParam(required = false, defaultValue = "World") String name) {
+        System.out.println("==== in greeting ====");
+        return new GreetingOldref(String.format(template, name));
     }
 }
