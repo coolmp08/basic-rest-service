@@ -17,7 +17,12 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public Map<String, Object> greeting(){
-        basicService.listBeans();
+//        basicService.listBeans();
         return Collections.singletonMap("message","Hello, World");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/home")
+    public Map<String, Object> home(){
+        return Collections.singletonMap("message","Welcome to Home!");
     }
 }
