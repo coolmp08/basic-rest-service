@@ -1,7 +1,9 @@
 package io.devsense.basic_rest_service;
 
+import io.devsense.basic_rest_service.domain.entity.Customer;
 import io.devsense.basic_rest_service.domain.model.Quote;
 import io.devsense.basic_rest_service.messaging.Receiver;
+import io.devsense.basic_rest_service.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -78,6 +80,27 @@ public class BasicRestServiceApplication {
 		return new StringRedisTemplate(redisConnectionFactory);
 	}
 
+	@Bean
+	public CommandLineRunner demoJPA(CustomerRepository customerRepository){
+		return args -> {
+			customerRepository.save(new Customer("Manas", "Kulkarni"));
+			customerRepository.save(new Customer("Prachi", "Telang"));
+			customerRepository.save(new Customer("Shreenivas", "Dixit"));
+			customerRepository.save(new Customer("Arya", "Rukmangad"));
+
+			log.info("Fetching all customers from database: ");
+			customerRepository.findAll().forEach(customer -> {log.info(customer.toString());});
+			log.info("-------");
+
+			log.info("Fetch Customer by customer-id");
+			log.info(String.valueOf(customerRepository.findById(1L)));
+
+			log.info("Fetch Customer by lastName");
+			log.info(customerRepository.findByLastName("Rukmangad").toString());
+		};
+
+	}
+
 	public static void main(String[] args) throws InterruptedException {
 
 		ApplicationContext context = SpringApplication.run(BasicRestServiceApplication.class, args);
@@ -90,7 +113,6 @@ public class BasicRestServiceApplication {
 			stringRedisTemplate.convertAndSend("chitchat", "Hello from Redis! ");
 			Thread.sleep(500);
 		}
-
 		System.exit(0);
 	}
 }
